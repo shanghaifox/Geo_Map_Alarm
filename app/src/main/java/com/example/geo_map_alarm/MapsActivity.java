@@ -2,6 +2,9 @@ package com.example.geo_map_alarm;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -23,6 +26,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     String mPermission = Manifest.permission.ACCESS_FINE_LOCATION;
     GPSTracker gps;
     private GoogleMap mMap;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +60,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             longitude = gps.getLongitude();
 
             // \n is for new line
-            Toast.makeText(getApplicationContext(), "Your Location is - \nLat: "
-                    + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
+            /*Toast.makeText(getApplicationContext(), "Your Location is - \nLat: "
+                    + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();*/
         } else {
             // can't get location
             // GPS or Network is not enabled
@@ -77,7 +81,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(target_Location).title("Target Location"));
 
         double distance = gps.distanceBetween(current_Location, target_Location);
-        Toast.makeText(getApplicationContext(), "distance is" + distance, Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "distance is " + distance, Toast.LENGTH_LONG).show();
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(current_Location, 3));
+
+        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+        Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+        r.play();
     }
 }
